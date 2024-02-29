@@ -4,14 +4,13 @@ const Vault = require('node-vault');
 const cors = require('cors');
 
 const app = express();
-const port = 8000;
+const port = process.env.PORT || 3000; // Fallback to 3000 if PORT is not defined
 
-// Replace with your Vault server address and token
 const vaultClient = Vault({
-    apiVersion: 'v1',
-    endpoint: 'http://127.0.0.1:8200', // Vault server URL
-    token: 'hvs.PGGJlVJrhmRket4p9yjcyAPK' // Use the Root Token from Vault
-  });
+    apiVersion: process.env.VAULT_API_VERSION,
+    endpoint: process.env.VAULT_ENDPOINT,
+    token: process.env.VAULT_TOKEN
+});
   
 
 app.use(bodyParser.json());
@@ -55,7 +54,6 @@ app.post('/api/store-token', async (req, res) => {
 
 // Endpoint to retrieve a stored token
 app.get('/api/get-token', async (req, res) => {
-    console.log("in get")
     const { Consumeraddress, providerAddress, action } = req.query;
   
     try {
@@ -72,8 +70,6 @@ app.get('/api/get-token', async (req, res) => {
   });
   
 
-
-
 // Endpoint to delete a stored token
 app.delete('/api/delete-token', async (req, res) => {
     const { Consumeraddress, providerAddress, action } = req.body;
@@ -87,7 +83,6 @@ app.delete('/api/delete-token', async (req, res) => {
     }
   });
   
-
 
 app.listen(port, () => {
   console.log(`Server running at port:${port}`);
