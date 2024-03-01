@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Vault = require('node-vault');
 const cors = require('cors');
+require('dotenv').config();
+
 
 const app = express();
 const port = process.env.PORT || 3000; // Fallback to 3000 if PORT is not defined
